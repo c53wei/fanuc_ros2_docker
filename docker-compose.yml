@@ -1,0 +1,54 @@
+services:
+  fanuc-ros2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fanuc-ros2-humble
+    container_name: fanuc-ros2-humble
+    stdin_open: true
+    tty: true
+    # network_mode: host  # Disabled on macOS - Docker runs in VM
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - ROS_LOCALHOST_ONLY=${ROS_LOCALHOST_ONLY:-0}
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+    # volumes:
+      # Uncomment to persist workspace changes
+      # - ./workspace:/root/ws_fanuc
+      
+      # X11 socket for GUI applications (Linux only - not available on macOS)
+      # - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      
+      # Uncomment to share local code or configurations
+      # - ./config:/root/config:ro
+    # Uncomment for privileged access (needed for some hardware interfaces)
+    # privileged: true
+    # devices:
+    #   - /dev/dri:/dev/dri  # GPU access for visualization
+    command: /bin/bash
+
+  # Optional: Separate service for visualization only (mock hardware)
+  # NOTE: This service is currently disabled because fanuc_moveit_config is not included in the Dockerfile
+  # fanuc-viz:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: fanuc-ros2-humble
+  #   container_name: fanuc-ros2-viz
+  #   stdin_open: true
+  #   tty: true
+  #   environment:
+  #     - DISPLAY=${DISPLAY:-host.docker.internal:0}
+  #     - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+  #   volumes:
+  #     # X11 socket (Linux only - not available on macOS)
+  #     # - /tmp/.X11-unix:/tmp/.X11-unix:rw
+  #   command: >
+  #     bash -c "source /opt/ros/humble/setup.bash &&
+  #              source /root/ws_fanuc/install/setup.bash &&
+  #              ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx10ia use_mock:=true"
+  #   profiles:
+  #     - visualization
+
