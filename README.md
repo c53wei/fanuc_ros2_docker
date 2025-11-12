@@ -18,7 +18,6 @@ This Docker setup provides a complete environment for running the FANUC ROS 2 Dr
 
 - Docker Desktop installed and running on your system
 - Docker Compose (included with Docker Desktop)
-- (Optional) XQuartz for GUI/RViz support on macOS
 
 ## Building and Running with Docker Compose (Recommended)
 
@@ -56,44 +55,6 @@ docker-compose down
 ```bash
 docker run -it --rm fanuc-ros2-humble
 ```
-
-### macOS with Display Support (for RViz)
-
-**Step 1: Install and Configure XQuartz**
-
-```bash
-# Install XQuartz if not already installed
-brew install --cask xquartz
-```
-
-After installation:
-1. Open XQuartz application
-2. Go to **Preferences → Security**
-3. Enable "**Allow connections from network clients**"
-4. **Restart XQuartz**
-
-**Step 2: Allow Docker Connections**
-
-```bash
-xhost + localhost
-```
-
-**Step 3: Run Container with Display**
-
-```bash
-docker run -it --rm \
-  -e DISPLAY=host.docker.internal:0 \
-  fanuc-ros2-humble
-```
-
-**Step 4: Test Display (Optional)**
-
-Inside the container:
-```bash
-ros2 run turtlesim turtlesim_node
-```
-
-If you see the TurtleSim window, RViz will also work.
 
 ### Linux with Display Support
 
@@ -200,22 +161,6 @@ ros2 run demo_nodes_cpp talker
    - Check logs: `docker-compose logs fanuc-ros2`
    - Verify the image built successfully: `docker images | grep fanuc`
 
-### macOS-Specific Issues
-
-4. **RViz or GUI applications won't display**
-   - XQuartz must be installed and running
-   - Verify XQuartz preferences: Security → "Allow connections from network clients"
-   - Run `xhost + localhost` before starting the container
-   - Test with TurtleSim: `ros2 run turtlesim turtlesim_node`
-
-5. **"network_mode: host" errors**
-   - This mode is not supported on macOS (Docker runs in a VM)
-   - The docker-compose.yml has been updated to disable this on macOS
-   - For physical robot connections, use port mapping instead
-
-6. **Git submodules not cloned**
-   - Check that submodules were cloned: `git submodule status`
-   - If missing, run: `git submodule update --init --recursive`
 
 ### Getting Help
 
