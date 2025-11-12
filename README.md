@@ -2,7 +2,7 @@
 
 This Docker setup provides a complete environment for running the FANUC ROS 2 Driver on Ubuntu 22.04 with ROS 2 Humble Hawksbill.
 
-**✅ macOS Compatible** - This configuration has been tested and optimized for macOS (Apple Silicon and Intel).
+**This configuration has only been tested on Ubuntu 24.04.3 LTS codename noble** 
 
 ## What's Included
 
@@ -11,13 +11,11 @@ This Docker setup provides a complete environment for running the FANUC ROS 2 Dr
 - FANUC Description packages (CRX, LR Mate, M-series, R-series)
 - FANUC Driver package (with submodules)
 - FANUC MoveIt configuration
-- All necessary dependencies and build tools
-- Pre-compiled and ready to use (~5GB image)
 
 ## Prerequisites
 
-- Docker Desktop installed and running on your system
-- Docker Compose (included with Docker Desktop)
+- Docker 
+- Linux OS
 
 ## Building and Running with Docker Compose (Recommended)
 
@@ -25,7 +23,7 @@ This Docker setup provides a complete environment for running the FANUC ROS 2 Dr
 
 ```bash
 cd ~/fanuc_ros2_docker
-docker-compose build
+docker compose build
 ```
 
 **Note:** This will take approximately 10 minutes as it downloads and builds all ROS 2 dependencies and FANUC packages.
@@ -33,7 +31,7 @@ docker-compose build
 ### 2. Start the Container
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 3. Access the Container
@@ -48,13 +46,6 @@ docker exec -it fanuc-ros2-humble bash
 docker-compose down
 ```
 
-## Running with Plain Docker (Alternative)
-
-### Basic Usage (Terminal Only)
-
-```bash
-docker run -it --rm fanuc-ros2-humble
-```
 
 ### Linux with Display Support
 
@@ -69,8 +60,6 @@ docker run -it --rm \
 ```
 
 ### With Network Access (for Physical Robot)
-
-**Note:** `--network host` does not work properly on macOS (Docker runs in a VM). Use port mapping instead if needed.
 
 **Linux:**
 ```bash
@@ -143,23 +132,6 @@ ros2 run demo_nodes_cpp talker
 
 - [FANUC ROS 2 Driver Documentation](https://fanuc-corporation.github.io/fanuc_driver_doc/main/docs/quick_start/quick_start.html)
 - [ROS 2 Humble Documentation](https://docs.ros.org/en/humble/)
-
-## Troubleshooting
-
-### General Issues
-
-1. **Docker daemon not running**
-   - Ensure Docker Desktop is running before building or starting containers
-   - Check the Docker Desktop icon in your system tray/menu bar
-
-2. **Build takes too long or fails**
-   - Ensure Docker has sufficient resources (RAM: 8GB+, CPU: 4+ cores)
-   - Check your internet connection (downloads ~3GB of packages)
-   - Try building again: `docker-compose build --no-cache`
-
-3. **Container won't start**
-   - Check logs: `docker-compose logs fanuc-ros2`
-   - Verify the image built successfully: `docker images | grep fanuc`
 
 
 ### Getting Help
