@@ -36,6 +36,8 @@ RUN echo "Building FANUC libraries" && \
     . /opt/ros/humble/setup.sh && \
     colcon build --symlink-install --cmake-args -DBUILD_TESTING=1 -DBUILD_EXAMPLES=1
 
+RUN echo "source /opt/ros/humble/setup.bash \nsource ~/ws_fanuc/install/setup.bash" >> /root/.bashrc
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT [ "/bin/bash", "/entrypoint.sh"]

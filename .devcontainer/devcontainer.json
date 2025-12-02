@@ -13,6 +13,8 @@
 	"features": {
 		"ghcr.io/devcontainers/features/desktop-lite:1": {}
 	},
+	"workspaceFolder": "/root/src",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/root/src,type=bind,consistency=cached",
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [6080, 5901],
