@@ -14,6 +14,35 @@ Using VSCode VNC viewer for RViz which is compatible with non-linux machines lik
 
 # Raster Playground - MoveIt2 + ROS2 helper
 
+## Running the example controller node
+
+If you added the example package `my_robot_controller` (contains a `move_to_joint` console script) build and run it like this from the workspace root:
+
+```bash
+# Build the package (from the workspace root that contains `src/`)
+colcon build --symlink-install --packages-select my_robot_controller
+
+# Source your ROS and workspace overlays in the same shell
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+# Verify the executable is registered and run it
+ros2 pkg executables my_robot_controller
+ros2 run my_robot_controller move_to_joint
+```
+
+Notes:
+
+- The node will contact MoveIt2's `move_group` and your robot controllers. Make sure `move_group` is running (for example with the mock launch shown above) before running the node.
+- If Python cannot import the package at runtime you may need to source the workspace install in the shell used to run `ros2 run` (the `source install/setup.bash` step above). In development environments you can also add that source line to your `~/.bashrc` so new shells include the overlay automatically.
+- As a last resort for quick testing you can add the package `src` folder to `PYTHONPATH` before running (not recommended long-term):
+
+```bash
+export PYTHONPATH=$(pwd)/src/my_robot_controller:$PYTHONPATH
+ros2 run my_robot_controller move_to_joint
+```
+
+
 This repository contains a simple development script `src/raster_playground.py` that demonstrates planning and executing a pose on a robot MoveIt group (example: CRX20ia_L).
 
 Important notes
@@ -21,30 +50,16 @@ Important notes
 - The Python MoveIt bindings (`moveit_commander`) must be installed on the host.
 
 Usage
-1. Source your ROS2 and MoveIt2 workspaces (example):
+1. Source your ROS2 and MoveIt2 workspaces (example): 
 
-   # Bash example (adjust to your install)
-   source /opt/ros/humble/setup.bash 
-   source ~/ws_fanuc/install/setup.bash
+
+   `source /opt/ros/humble/setup.bash && source ~/ws_fanuc/install/setup.bash`
 
 2. Run move_group for your robot (from your MoveIt2 config / launch files).
    
-   * See above instructions to either launch with mock or real hardware.
+   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l use_mock:=true`
 
-3. Run the script:
+   OR
 
-   python3 src/raster_playground.py
+   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l robot_ip:="192.168.1.100"`
 
-4. Change parameters at runtime with `ros2 param set` (for example change reference frame):
-
-   ros2 param set /raster_playground reference_frame "world"
-
-Parameters
-- `group_name`: MoveIt move group name (default: `manipulator`)
-- `reference_frame`: Frame in which the target pose is expressed (default: `world`)
-- `target_x`, `target_y`, `target_z`: Target position in meters
-- `target_roll`, `target_pitch`, `target_yaw`: Target orientation (radians)
-
-Notes & next steps
-- This is a lightweight development helper — to integrate into a robot system, convert it into a ROS2 package with a proper `package.xml`, `setup.py` and launch files.
-- If moveit_commander bindings are not installed, install MoveIt2 and the Python wrappers for your ROS2 distribution.

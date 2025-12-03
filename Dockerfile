@@ -36,6 +36,11 @@ RUN echo "Building FANUC libraries" && \
     . /opt/ros/humble/setup.sh && \
     colcon build --symlink-install --cmake-args -DBUILD_TESTING=1 -DBUILD_EXAMPLES=1
 
+RUN echo "Installing development dependencies" && \
+    apt-get update && \
+    apt-get install ros-humble-pymoveit2 && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN echo "source /opt/ros/humble/setup.bash \nsource ~/ws_fanuc/install/setup.bash" >> /root/.bashrc
 
 COPY entrypoint.sh /entrypoint.sh
