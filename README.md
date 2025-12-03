@@ -16,12 +16,34 @@ Using VSCode VNC viewer for RViz which is compatible with non-linux machines lik
 
 ## Running the example controller node
 
-If you added the example package `my_robot_controller` (contains a `move_to_joint` console script) build and run it like this from the workspace root:
+Usage
+1. Source your ROS2 and MoveIt2 workspaces (example): 
+
+
+   `source /opt/ros/humble/setup.bash && source ~/ws_fanuc/install/setup.bash`
+
+2. Build the package from the directory that contains the node if it isn't built
+
+
+   `colcon build --symlink-install --packages-select my_robot_controller`
+
+3. Run move_group for your robot (from your MoveIt2 config / launch files).
+   
+   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l use_mock:=true`
+
+   OR
+
+   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l robot_ip:="192.168.1.100"`
+   DO NOT RUN WITH PHYSICAL HARDWARE UNLESS YOU ARE SURE THE AREA IS CLEAR!!
+
+
+4. Run the service:
+   `ros2 run my_robot_controller move_to_joint`
+
+## Troubleshooting
+
 
 ```bash
-# Build the package (from the workspace root that contains `src/`)
-colcon build --symlink-install --packages-select my_robot_controller
-
 # Source your ROS and workspace overlays in the same shell
 source /opt/ros/humble/setup.bash
 source install/setup.bash
@@ -43,23 +65,6 @@ ros2 run my_robot_controller move_to_joint
 ```
 
 
-This repository contains a simple development script `src/raster_playground.py` that demonstrates planning and executing a pose on a robot MoveIt group (example: CRX20ia_L).
-
 Important notes
 - This script expects a working ROS2 environment and MoveIt2 (move_group) running for your robot.
-- The Python MoveIt bindings (`moveit_commander`) must be installed on the host.
-
-Usage
-1. Source your ROS2 and MoveIt2 workspaces (example): 
-
-
-   `source /opt/ros/humble/setup.bash && source ~/ws_fanuc/install/setup.bash`
-
-2. Run move_group for your robot (from your MoveIt2 config / launch files).
-   
-   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l use_mock:=true`
-
-   OR
-
-   `ros2 launch fanuc_moveit_config fanuc_moveit.launch.py robot_model:=crx20ia_l robot_ip:="192.168.1.100"`
 
