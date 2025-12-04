@@ -38,6 +38,10 @@ Usage
 
 
 4. Run the service:
+
+
+   `source install/setup.bash`
+   
    `ros2 run my_robot_controller move_to_joint`
 
 ## Troubleshooting

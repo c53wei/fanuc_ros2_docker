@@ -13,7 +13,7 @@ JOINT_NAMES = [
 BASE_LINK_NAME = "base_link"
 END_EFFECTOR_NAME = "tool0"
 
-TARGET_JOINT_POSITIONS = [0.0, -1.57, 1.57, 0.0, 0.0, 0.0]
+TARGET_JOINT_POSITIONS = [0.0, -1.57, 1.57, 0.0, 1.57, 0.0]
 
 
 class RobotControllerNode(Node):

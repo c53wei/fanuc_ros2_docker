@@ -41,9 +41,6 @@ class RobotControllerNode(Node):
         # This will send a goal to the Move Group node
         self.moveit2.move_to_configuration(
             joint_positions=TARGET_JOINT_POSITIONS,
-            # optional parameters: velocity/acceleration scaling
-            velocity_scaling_factor=0.8,
-            acceleration_scaling_factor=0.8,
         )
         
         # Wait until the planning and execution is complete
