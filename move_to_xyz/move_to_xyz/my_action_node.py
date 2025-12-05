@@ -30,7 +30,7 @@ START_Y = -RASTER_SIZE / 2.0
 START_Z = HEIGHT
 
 # Fixed orientation (identity quaternion: [x, y, z, w])
-TARGET_ORIENTATION = [0.0, 0.0, 0.0, 1.0] 
+TARGET_ORIENTATION = [0.0, 0.70710678, 0.0, 0.70710678]
 # ------------------------------
 
 class RobotControllerNode(Node):
