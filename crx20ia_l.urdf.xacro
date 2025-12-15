@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<robot name="crx20ia_l" xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:arg name="robot_ip" default="$(arg robot_ip)"/>
+  <xacro:arg name="rmi_port" default="16001"/>
+  <xacro:arg name="stream_motion_port" default="60015"/>
+  <xacro:arg name="gpio_configuration" default=""/>
+  <xacro:arg name="payload_schedule" default="1"/>
+  <xacro:arg name="out_cmd_interp_buff_target" default="8"/>
+  <xacro:arg name="use_mock" default="false"/>
+
+  <xacro:include filename="$(find fanuc_crx_description)/urdf/crx20ia_l_urdf_macro.xacro"/>
+  <xacro:if value="$(arg use_mock)">
+    <xacro:include filename="$(find fanuc_hardware_interface)/config/crx_mock_ros2_control_macro.xacro"/>
+  </xacro:if>
+  <xacro:unless value="$(arg use_mock)">
+    <xacro:include filename="$(find fanuc_hardware_interface)/config/crx_physical_ros2_control_macro.xacro"/>
+  </xacro:unless>
+
+  <link name="world"/>
+  <link name="end_effector"/>
+  <xacro:crx20ia_l parent="world" child="end_effector">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:crx20ia_l>
+
+  <link name="ground_plane_box">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="1.0 1.0 0.5"/> 
+        </geometry>
+        <material name="Grey">
+            <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="1.0 1.0 0.5"/> 
+        </geometry>
+    </collision>
+  </link>
+
+  <joint name="ground_plane_box" type="fixed">
+      <parent link="world" />
+      <child link="ground_plane_box" />
+      <origin xyz="0 0 -0.25" rpy="0 0 0" />
+  </joint>
+
+  <xacro:crx_control name="crx20ia_l"/>
+</robot>
+

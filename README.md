@@ -25,7 +25,7 @@ Usage
 2. Build the package from the directory that contains the node if it isn't built
 
 
-   `colcon build --symlink-install --packages-select my_robot_controller`
+   `colcon build --symlink-install --packages-select my_robot_controller move_to_xyz`
 
 3. Run move_group for your robot (from your MoveIt2 config / launch files).
    
@@ -37,12 +37,14 @@ Usage
    DO NOT RUN WITH PHYSICAL HARDWARE UNLESS YOU ARE SURE THE AREA IS CLEAR!!
 
 
-4. Run the service:
+4. Run the service(s):
 
 
    `source install/setup.bash`
    
    `ros2 run my_robot_controller move_to_joint`
+
+   `ros2 run move_to_xyz move_to_xyz`
 
 ## Troubleshooting
 

@@ -32,6 +32,24 @@ RUN apt-get update && \
     rosdep install --ignore-src --from-paths src -y && \
     rm -rf /var/lib/apt/lists/*
 
+RUN echo "Copying custom robot configuration files" && \
+    mkdir -p /root/ws_fanuc/src/fanuc_description/fanuc_crx_description/meshes/linear_rail/visual/
+
+COPY crx20ia_l_rail_description/*.dae \
+    /root/ws_fanuc/src/fanuc_description/fanuc_crx_description/meshes/linear_rail/visual/
+
+COPY crx20ia_l_rail_description/crx20ia_l_rail.urdf.xacro \
+    /root/ws_fanuc/src/fanuc_description/fanuc_crx_description/robot/crx20ia_l_rail.urdf.xacro
+
+COPY crx20ia_l_rail_description/linear_rail_macro.xacro \
+    /root/ws_fanuc/src/fanuc_description/fanuc_crx_description/urdf/linear_rail_macro.xacro
+
+COPY crx20ia_l_rail_description/view_crx.launch.py \
+    /root/ws_fanuc/src/fanuc_description/fanuc_crx_description/launch/view_crx.launch.py
+
+COPY crx20ia_l.urdf.xacro \ 
+    /root/ws_fanuc/src/fanuc_driver/fanuc_hardware_interface/robot/crx20ia_l.urdf.xacro
+
 RUN echo "Building FANUC libraries" && \
     . /opt/ros/humble/setup.sh && \
     colcon build --symlink-install --cmake-args -DBUILD_TESTING=1 -DBUILD_EXAMPLES=1
