@@ -74,3 +74,11 @@ ros2 run my_robot_controller move_to_joint
 Important notes
 - This script expects a working ROS2 environment and MoveIt2 (move_group) running for your robot.
 
+# Next Steps
+
+Currently, the 7th axis/linear rail urdfs are supported for the visualization node only:
+
+ `ros2 launch fanuc_crx_description view_crx.launch.py robot_model:=crx20ia_l_rail`
+
+Some overhead must be completed to get the joint controllable when connected to the real hardware. Currently, just have the ground added as an object for those options.
+
